@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,11 @@ namespace UpgradeUpdateRvt.Command
         private LinkRvtVM _linkRvtVM;
         public LinkBrowseFolderCommand(LinkRvtVM linkRvtVM) { _linkRvtVM = linkRvtVM; }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged
+        {
+            add { }
+            remove { }
+        }
 
         public bool CanExecute(object parameter)
         {

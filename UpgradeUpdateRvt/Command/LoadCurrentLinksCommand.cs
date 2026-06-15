@@ -1,4 +1,4 @@
-﻿using Autodesk.Revit.DB;
+using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.IFC;
 using Autodesk.Revit.UI;
 using System;
@@ -18,7 +18,11 @@ namespace UpgradeUpdateRvt.Command
     {
         private LinkRvtVM _linkRvtVM;
         public LoadCurrentLinksCommand(LinkRvtVM linkRvtVM) { _linkRvtVM = linkRvtVM; }
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged
+        {
+            add { }
+            remove { }
+        }
         public bool CanExecute(object parameter)
         {
             return true;
@@ -47,9 +51,9 @@ namespace UpgradeUpdateRvt.Command
                             );
                         if (link.Linked && !link.Loaded)
                         {
-                            if (link.CorespondLink != null)
+                            if (link.CorrespondLink != null)
                             {
-                                link.CorespondLink.LinkElement.LoadFrom(path, wsconf);
+                                link.CorrespondLink.LinkElement.LoadFrom(path, wsconf);
                                 link.Loaded = true;
                             }
                             else
@@ -105,9 +109,9 @@ namespace UpgradeUpdateRvt.Command
                             );
                         if (link.Linked && !link.Loaded)
                         {
-                            if (link.CorespondLink != null)
+                            if (link.CorrespondLink != null)
                             {
-                                link.CorespondLink.LinkElement.LoadFrom(path, wsconf);
+                                link.CorrespondLink.LinkElement.LoadFrom(path, wsconf);
                                 link.Loaded = true;
                             }
                             else
@@ -116,13 +120,26 @@ namespace UpgradeUpdateRvt.Command
                                 using (Transaction t = new Transaction(_linkRvtVM._currentDoc, "Linkdata IFC Transaction"))
                                 {
                                     t.Start();
-                                    // Verrifier ci le fichier ifcFilePath + ".RVT" existe
                                     bool check = File.Exists(ifcFilePath + ".RVT");
                                     if (!check)
                                     {
-                                        Document ifcdoc = _linkRvtVM._currentDoc.Application.OpenIFCDocument(ifcFilePath);
-                                        ifcdoc.SaveAs(ifcFilePath + ".RVT");
-                                        bool ret = ifcdoc.Close();
+                                        Document ifcdoc = null;
+                                        try
+                                        {
+                                            ifcdoc = _linkRvtVM._currentDoc.Application.OpenIFCDocument(ifcFilePath);
+                                            ifcdoc.SaveAs(ifcFilePath + ".RVT");
+                                        }
+                                        finally
+                                        {
+                                            if (ifcdoc != null)
+                                            {
+                                                try
+                                                {
+                                                    ifcdoc.Close(false);
+                                                }
+                                                catch { }
+                                            }
+                                        }
                                     }
 
                                     FilePath newpath = new FilePath(ifcFilePath + ".RVT");

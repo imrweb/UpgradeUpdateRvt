@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,7 +15,12 @@ namespace UpgradeUpdateRvt.Command
     {
         private MainVM _mainVM;
         public ConvertCommand(MainVM mainVM) { _mainVM = mainVM; }
-        public event EventHandler CanExecuteChanged;
+        
+        public event EventHandler CanExecuteChanged
+        {
+            add { }
+            remove { }
+        }
 
         public bool CanExecute(object parameter)
         {
@@ -24,26 +29,30 @@ namespace UpgradeUpdateRvt.Command
 
         public void Execute(object parameter)
         {
-            string pathUpToDirectory = Directory.GetParent(_mainVM.Init.DirectoryPath).FullName;
-            // create Folder Converted if not exist in pathUpToDirectory
-            string convertedFolderPath = System.IO.Path.Combine(pathUpToDirectory, "Converted");
-            string convertdirectery = convertedFolderPath;
-            if (!Directory.Exists(convertedFolderPath))
+            try
             {
-                convertdirectery = Directory.CreateDirectory(convertedFolderPath).FullName;
-
+                if (!_mainVM.Init.SaveInSameFolder)
+                {
+                    var parentDir = Directory.GetParent(_mainVM.Init.DirectoryPath);
+                    string pathUpToDirectory = parentDir != null ? parentDir.FullName : _mainVM.Init.DirectoryPath;
+                    // create Folder Converted if not exist in pathUpToDirectory
+                    string convertedFolderPath = System.IO.Path.Combine(pathUpToDirectory, "Converted");
+                    string convertdirectery = convertedFolderPath;
+                    if (!Directory.Exists(convertedFolderPath))
+                    {
+                        convertdirectery = Directory.CreateDirectory(convertedFolderPath).FullName;
+                    }
+                    _mainVM.Init.PathConvertedDirectory = convertdirectery;
+                }
+                
+                // add prefix to file name
+                _mainVM.Init.AjouterPrefix("UPD_");
+                _mainVM.Init.UpgradeUpdateRvt();
             }
-            _mainVM.Init.PathConvertedDirectory = convertdirectery;
-            // add perfix to file name
-     
-            _mainVM.Init.AjouterPrefix("UPD_");
-            _mainVM.Init.UpgradeUpdateRvt();
-            _mainVM.Init.EnleverPrefix("UPD_");
-
-
-
-
-
+            finally
+            {
+                _mainVM.Init.EnleverPrefix("UPD_");
+            }
         }
     }
 }

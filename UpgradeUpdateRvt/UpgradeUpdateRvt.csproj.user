@@ -4,7 +4,7 @@
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup>
-    <ActiveDebugProfile>Revit 2025</ActiveDebugProfile>
+    <ActiveDebugProfile>Revit 2026</ActiveDebugProfile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Update="ApplicatioUI.xaml.cs">

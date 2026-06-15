@@ -1,11 +1,11 @@
-﻿<Window x:Class="UpgradeUpdateRvt.ApplicatioUI"
+<Window x:Class="UpgradeUpdateRvt.ApplicatioUI"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UpgradeUpdateRvt"
         mc:Ignorable="d"
-        Title="Mise à jour / Upgrade Revit Files" Height="520" Width="920"
+        Title="Mise à jour / Upgrade Revit Files" Height="620" Width="1000"
         WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip"
         Background="#F5F7FA">
     <Window.Resources>
@@ -35,71 +35,217 @@
     </Window.Resources>
     <Grid Margin="16">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/> <!-- Row 0: Title -->
+            <RowDefinition Height="*"/>    <!-- Row 1: TabControl -->
+            <RowDefinition Height="Auto"/> <!-- Row 2: Action Buttons -->
         </Grid.RowDefinitions>
 
         <!-- Titre -->
         <TextBlock Grid.Row="0" Text="Dossier de projet" Style="{StaticResource HeaderText}"/>
 
-        <!-- Chemin + Préfixe + Bouton Parcourir -->
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <!-- Label Préfixe -->
-                <ColumnDefinition Width="140"/>
-                <!-- Champ Préfixe -->
-                <ColumnDefinition Width="*"/>
-                <!-- Chemin -->
-                <ColumnDefinition Width="Auto"/>
-                <!-- Bouton -->
-            </Grid.ColumnDefinitions>
+        <!-- TabControl -->
+        <TabControl Grid.Row="1" Background="Transparent" BorderThickness="0" Margin="0,0,0,12">
+            <!-- Onglet 1 : Conversion -->
+            <TabItem Header="Conversion en lot" Padding="16,8">
+                <Grid Margin="0,12,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/> <!-- Folder Selection -->
+                        <RowDefinition Height="*"/>    <!-- DataGrid -->
+                    </Grid.RowDefinitions>
 
-            <TextBlock Grid.Column="0" 
-               Text="Préfixe :" 
-               VerticalAlignment="Center" 
-               Margin="0,0,8,0"/>
+                    <!-- Sélection du dossier -->
+                    <Grid Grid.Row="0" Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-            <TextBox Grid.Column="1" 
-             Text="{Binding Init.Prefix, UpdateSourceTrigger=PropertyChanged}" 
-             Margin="0,0,12,0" 
-             Padding="6"
-             VerticalContentAlignment="Center"/>
+                        <TextBox Grid.Column="0" 
+                          Text="{Binding Init.MainPath, UpdateSourceTrigger=PropertyChanged}" 
+                          Padding="8" 
+                          VerticalContentAlignment="Center"
+                          IsReadOnly="True"/>
 
-            <TextBox Grid.Column="2" 
-             Text="{Binding Init.MainPath, UpdateSourceTrigger=PropertyChanged}" 
-             Margin="0,0,8,0" 
-             Padding="8" 
-             VerticalContentAlignment="Center"/>
+                        <Button Grid.Column="1" 
+                         Content="Parcourir..." 
+                         Command="{Binding BrowseFolderCommand}"
+                         Margin="8,0"/>
 
-            <Button Grid.Column="3" 
-            Content="Parcourir..." 
-            Command="{Binding BrowseFolderCommand}"/>
-        </Grid>
+                        <CheckBox Grid.Column="2"
+                                   Content="Inclure les sous-dossiers"
+                                   IsChecked="{Binding Init.IncludeSubdirectories, Mode=TwoWay}"
+                                   VerticalAlignment="Center"
+                                   Margin="8,0,8,0"/>
 
-        <!-- Liste des fichiers -->
-        <DataGrid Grid.Row="2" Margin="0,16,0,0"
-                  ItemsSource="{Binding Init.ListFiles, UpdateSourceTrigger=PropertyChanged}"
-                  AutoGenerateColumns="False"
-                  CanUserAddRows="False"
-                  IsReadOnly="True"
-                  GridLinesVisibility="Horizontal"
-                  HeadersVisibility="Column"
-                  AlternatingRowBackground="#FAFCFF">
+                        <CheckBox Grid.Column="3"
+                                   Content="Enregistrer dans le même dossier (écraser)"
+                                   IsChecked="{Binding Init.SaveInSameFolder, Mode=TwoWay}"
+                                   VerticalAlignment="Center"
+                                   Margin="8,0,0,0"/>
+                    </Grid>
 
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Fichier original" Binding="{Binding OriginFilename}" Width="*"/>
-                <DataGridTextColumn Header="Nouveau nom"     Binding="{Binding NewFileName}"    Width="*"/>
-                <DataGridCheckBoxColumn Header="Workshared"   Binding="{Binding Workshared}"   Width="90"/>
-                <DataGridCheckBoxColumn Header="Converti"     Binding="{Binding Coverted}"     Width="90"/>
-                <DataGridTextColumn Header="Statut"           Binding="{Binding Status}"       Width="120"/>
-            </DataGrid.Columns>
-        </DataGrid>
+                    <!-- Liste des fichiers -->
+                    <DataGrid Grid.Row="1" Margin="0,4,0,0"
+                              ItemsSource="{Binding Init.ListFiles, UpdateSourceTrigger=PropertyChanged}"
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False"
+                              IsReadOnly="True"
+                              GridLinesVisibility="Horizontal"
+                              HeadersVisibility="Column"
+                              AlternatingRowBackground="#FAFCFF">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Sous-dossier"     Binding="{Binding SubFolder}"      Width="150"/>
+                            <DataGridTextColumn Header="Fichier original" Binding="{Binding OriginFilename}" Width="*"/>
+                            <DataGridTextColumn Header="Nouveau nom"     Binding="{Binding NewFileName}"    Width="*"/>
+                            <DataGridCheckBoxColumn Header="Workshared"   Binding="{Binding Workshared}"   Width="90"/>
+                            <DataGridCheckBoxColumn Header="Converti"     Binding="{Binding Converted}"     Width="90"/>
+                            <DataGridTextColumn Header="Statut"           Binding="{Binding Status}"       Width="120"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <!-- Onglet 2 : Renommage -->
+            <TabItem Header="Renommage des fichiers" Padding="16,8">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,12,0,0">
+                    <StackPanel>
+                        <!-- Options de renommage -->
+                        <GroupBox Header="Options de renommage des fichiers" Margin="0,0,0,16" Padding="12">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Préfixe :" VerticalAlignment="Center" Margin="0,0,8,12"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Init.Prefix, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,24,12" Padding="6"/>
+
+                                <TextBlock Grid.Row="0" Grid.Column="2" Text="Suffixe :" VerticalAlignment="Center" Margin="0,0,8,12"/>
+                                <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding Init.Suffix, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,12" Padding="6"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="2" Text="Remplacer par :" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Init.ReplaceText, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,0" Padding="6"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Rechercher :" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Init.FindText, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,24,0" Padding="6"/>
+                            </Grid>
+                        </GroupBox>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- Onglet 3 : Nettoyage -->
+            <TabItem Header="Nettoyage après conversion" Padding="16,8">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,12,0,0">
+                    <StackPanel>
+                        <!-- Options de nettoyage -->
+                        <GroupBox Header="Options de nettoyage après conversion" Margin="0,0,0,12" Padding="12">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                
+                                <CheckBox Grid.Row="0" 
+                                          Content="Activer le nettoyage automatique après la conversion" 
+                                          IsChecked="{Binding Init.EnableCleanup, Mode=TwoWay}"
+                                          Margin="0,0,0,16"
+                                          VerticalAlignment="Center"
+                                          FontWeight="SemiBold"/>
+
+                                <Grid Grid.Row="1" IsEnabled="{Binding Init.EnableCleanup}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" 
+                                               Text="Noms / motifs à supprimer (séparés par des virgules) :" 
+                                               VerticalAlignment="Center" 
+                                               Margin="0,0,12,0"/>
+                                    <TextBox Grid.Column="1" 
+                                             Text="{Binding Init.CleanupPatterns, UpdateSourceTrigger=PropertyChanged}" 
+                                             Padding="6"
+                                             VerticalAlignment="Center"/>
+                                </Grid>
+                            </Grid>
+                        </GroupBox>
+
+                        <!-- Actions de nettoyage manuel -->
+                        <GroupBox Header="Nettoyage interactif manuel" Margin="0,8,0,0" Padding="12">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/> <!-- Description & Analyze Button -->
+                                    <RowDefinition Height="220"/>  <!-- DataGrid for matches -->
+                                    <RowDefinition Height="Auto"/> <!-- Execute Button -->
+                                </Grid.RowDefinitions>
+
+                                <!-- Row 0: Description & Analyse -->
+                                <Grid Grid.Row="0" Margin="0,0,0,12">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" 
+                                               Text="Analysez le répertoire sélectionné pour trouver les fichiers/dossiers correspondants aux motifs définis ci-dessus, puis décochez ceux que vous souhaitez conserver." 
+                                               TextWrapping="Wrap" FontStyle="Italic" Foreground="#555" VerticalAlignment="Center"/>
+                                    <Button Grid.Column="1" 
+                                            Content="Analyser le dossier" 
+                                            Command="{Binding ScanCleanupCommand}" 
+                                            VerticalAlignment="Center" Margin="12,0,0,0"/>
+                                </Grid>
+
+                                <!-- Row 1: DataGrid -->
+                                <DataGrid Grid.Row="1" 
+                                          Height="200"
+                                          ItemsSource="{Binding Init.CleanupList, UpdateSourceTrigger=PropertyChanged}"
+                                          AutoGenerateColumns="False"
+                                          CanUserAddRows="False"
+                                          GridLinesVisibility="Horizontal"
+                                          HeadersVisibility="Column"
+                                          AlternatingRowBackground="#FAFCFF"
+                                          Margin="0,0,0,12">
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn Header="Supprimer" Width="80">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                              HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTextColumn Header="Nom" Binding="{Binding Name}" Width="200" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="80" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Chemin relatif" Binding="{Binding RelativePath}" Width="*" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Motif correspondant" Binding="{Binding Pattern}" Width="150" IsReadOnly="True"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                                <!-- Row 2: Execute Action -->
+                                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Button Content="Supprimer les éléments sélectionnés" 
+                                            Command="{Binding CleanupCommand}"
+                                            Style="{StaticResource RaisedAccentButton}"
+                                            Background="#D32F2F"
+                                            Margin="0"/>
+                                </StackPanel>
+                            </Grid>
+                        </GroupBox>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
 
         <!-- Boutons actions -->
-        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
             <Button Content="Actualiser" Command="{Binding RefreshCommand}"/>
             <Button Content="Lancer la conversion" Command="{Binding ConvertCommand}" 
                     Style="{StaticResource RaisedAccentButton}"/>

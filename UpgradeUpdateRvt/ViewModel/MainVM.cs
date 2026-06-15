@@ -1,4 +1,4 @@
-﻿
+
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using System.Windows.Input;
@@ -12,6 +12,8 @@ namespace UpgradeUpdateRvt.ViewModel
         public ICommand RefreshCommand { get; set; }
         public ICommand ConvertCommand { get; set; }
         public ICommand BrowseFolderCommand { get; set; }
+        public ICommand CleanupCommand { get; set; }
+        public ICommand ScanCleanupCommand { get; set; }
         public  MainM Init { get; set; }
         public MainVM()
         {
@@ -21,6 +23,8 @@ namespace UpgradeUpdateRvt.ViewModel
             RefreshCommand = new Command.RefreshCommand(this);
             ConvertCommand = new Command.ConvertCommand(this);
             BrowseFolderCommand = new Command.BrowseFolderCommand(this);
+            CleanupCommand = new Command.CleanupCommand(this);
+            ScanCleanupCommand = new Command.ScanCleanupCommand(this);
 
 
         }

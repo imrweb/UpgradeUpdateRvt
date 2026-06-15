@@ -1,4 +1,4 @@
-﻿using Autodesk.Revit.UI;
+using Autodesk.Revit.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,7 +15,11 @@ namespace UpgradeUpdateRvt.Command
     {
         private MainVM _mainVM;
         public BrowseFolderCommand(MainVM mainVM) { _mainVM = mainVM; }
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged
+        {
+            add { }
+            remove { }
+        }
 
         public bool CanExecute(object parameter)
         {
@@ -24,35 +28,25 @@ namespace UpgradeUpdateRvt.Command
 
         public void Execute(object parameter)
         {
-            // rn browse .rvt openFileDialog
-            var dialog = new Microsoft.Win32.OpenFileDialog();
-            dialog.FileName = "Document"; // Default file name
-            dialog.DefaultExt = ".rvt"; // Default file extension
-            dialog.Filter = "Text documents (.rvt)|*.rvt"; // Filter files by extension
+            var dialog = new Microsoft.Win32.OpenFolderDialog
+            {
+                Title = "Sélectionner le dossier contenant les maquettes Revit"
+            };
 
-            // Show open file dialog box
             bool? result = dialog.ShowDialog();
 
-            // Process open file dialog box results
             if (result == true)
             {
-                // Open document
-                string filename = dialog.FileName;
-                // get directory path
-                string directoryPath = System.IO.Path.GetDirectoryName(filename);
-                // het file name 
-                string fileNameOnly = System.IO.Path.GetFileName(filename);
-                // get path up to directory Directory Parent of directoryPath
-             
-               
-
-
-                if (filename != "")
+                string folderPath = dialog.FolderName;
+                if (!string.IsNullOrEmpty(folderPath))
                 {
-                    _mainVM.Init.MainPath = filename;
-                    _mainVM.Init.DirectoryPath = directoryPath;
-                    _mainVM.Init.FileNameOnly = fileNameOnly;
-                 
+                    _mainVM.Init.MainPath = folderPath;
+                    _mainVM.Init.DirectoryPath = folderPath;
+                    _mainVM.Init.FileNameOnly = "";
+                    
+                    _mainVM.Init.LoadFiles();
+                    _mainVM.Init.RenameFile();
+                    _mainVM.Init.CanConvert = true;
                 }
             }
         }

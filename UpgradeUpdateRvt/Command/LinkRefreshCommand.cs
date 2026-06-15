@@ -1,4 +1,4 @@
-﻿using Autodesk.Revit.DB;
+using Autodesk.Revit.DB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,11 @@ namespace UpgradeUpdateRvt.Command
     {
         private LinkRvtVM _linkRvtVM;
         public LinkRefreshCommand(LinkRvtVM linkRvtVM) { _linkRvtVM = linkRvtVM; }
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged
+        {
+            add { }
+            remove { }
+        }
 
         public bool CanExecute(object parameter)
         {
@@ -28,11 +32,11 @@ namespace UpgradeUpdateRvt.Command
 
             foreach (RvtLinks linkfile in _linkRvtVM.LinkModel.ListFiles)
             {
-               DocLinks linsimilary  =  _linkRvtVM.LinkModel.analyseSimilarity(linkfile);
-                if (linsimilary != null)
+                DocLinks linkSimilarity = _linkRvtVM.LinkModel.AnalyseSimilarity(linkfile);
+                if (linkSimilarity != null)
                 {
-                    linkfile.CorespondLink = linsimilary;
-                   if (linsimilary.LinkElement.GetLinkedFileStatus() == LinkedFileStatus.Loaded)            
+                    linkfile.CorrespondLink = linkSimilarity;
+                    if (linkSimilarity.LinkElement.GetLinkedFileStatus() == LinkedFileStatus.Loaded)            
                     {
                         linkfile.Loaded = true;
                     }

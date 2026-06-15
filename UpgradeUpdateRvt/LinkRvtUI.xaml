@@ -1,4 +1,4 @@
-﻿<Window x:Class="UpgradeUpdateRvt.LinkRvtUI"
+<Window x:Class="UpgradeUpdateRvt.LinkRvtUI"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Gestion des liens Revit" Height="520" Width="880"
@@ -64,7 +64,7 @@
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Nom du fichier" Binding="{Binding Filename}" Width="*"/>
-                <DataGridTextColumn Header="CorespondLink" Binding="{Binding CorespondLink.LinkName}" Width="*"/>
+                <DataGridTextColumn Header="Lien correspondant" Binding="{Binding CorrespondLink.LinkName}" Width="*"/>
                 <DataGridTemplateColumn Header="Lié dans projet" Width="100">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

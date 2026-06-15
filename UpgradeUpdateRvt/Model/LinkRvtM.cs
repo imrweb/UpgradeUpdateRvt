@@ -1,4 +1,4 @@
-﻿using Autodesk.Revit.DB;
+using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Microsoft.VisualBasic;
 using ProrsbArs;
@@ -85,7 +85,7 @@ namespace UpgradeUpdateRvt.Model
                 }
             }
         }
-        public DocLinks analyseSimilarity(RvtLinks rvtLink)
+        public DocLinks AnalyseSimilarity(RvtLinks rvtLink)
         {
             // find similarity between LinkName and Filename troouth ListFiles
             DocLinks result = null;
@@ -163,7 +163,7 @@ namespace UpgradeUpdateRvt.Model
         // autres propriétés (simplifiées ici)
         public string FilePath { get; set; } = "";
         public string Filename { get; set; } = "";
-        public DocLinks CorespondLink { get; set; } = null;
+        public DocLinks CorrespondLink { get; set; } = null;
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

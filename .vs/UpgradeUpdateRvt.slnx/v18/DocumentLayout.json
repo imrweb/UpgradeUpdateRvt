@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "E:\\dev\\update _link_revits\\UpgradeUpdateRvt\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{2F29E494-886A-7AF0-F4A2-A84557DAB8B8}|UpgradeUpdateRvt\\UpgradeUpdateRvt.csproj|e:\\dev\\update _link_revits\\upgradeupdatervt\\upgradeupdatervt\\packagecontents.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{2F29E494-886A-7AF0-F4A2-A84557DAB8B8}|UpgradeUpdateRvt\\UpgradeUpdateRvt.csproj|solutionrelative:upgradeupdatervt\\packagecontents.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{2F29E494-886A-7AF0-F4A2-A84557DAB8B8}|UpgradeUpdateRvt\\UpgradeUpdateRvt.csproj|e:\\dev\\update _link_revits\\upgradeupdatervt\\upgradeupdatervt\\upgradeupdatervt.addin||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
       "RelativeMoniker": "D:0:0:{2F29E494-886A-7AF0-F4A2-A84557DAB8B8}|UpgradeUpdateRvt\\UpgradeUpdateRvt.csproj|solutionrelative:upgradeupdatervt\\upgradeupdatervt.addin||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     },
@@ -27,6 +31,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "PackageContents.xml",
+              "DocumentMoniker": "E:\\dev\\update _link_revits\\UpgradeUpdateRvt\\UpgradeUpdateRvt\\PackageContents.xml",
+              "RelativeDocumentMoniker": "UpgradeUpdateRvt\\PackageContents.xml",
+              "ToolTip": "E:\\dev\\update _link_revits\\UpgradeUpdateRvt\\UpgradeUpdateRvt\\PackageContents.xml",
+              "RelativeToolTip": "UpgradeUpdateRvt\\PackageContents.xml",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABQAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
+              "WhenOpened": "2026-06-15T08:33:41.846Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "UpgradeUpdateRvt.addin",
               "DocumentMoniker": "E:\\dev\\update _link_revits\\UpgradeUpdateRvt\\UpgradeUpdateRvt\\UpgradeUpdateRvt.addin",
               "RelativeDocumentMoniker": "UpgradeUpdateRvt\\UpgradeUpdateRvt.addin",
@@ -39,7 +56,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "LoadCurrentLinksCommand.cs",
               "DocumentMoniker": "E:\\dev\\update _link_revits\\UpgradeUpdateRvt\\UpgradeUpdateRvt\\Command\\LoadCurrentLinksCommand.cs",
               "RelativeDocumentMoniker": "UpgradeUpdateRvt\\Command\\LoadCurrentLinksCommand.cs",
@@ -47,12 +64,11 @@
               "RelativeToolTip": "UpgradeUpdateRvt\\Command\\LoadCurrentLinksCommand.cs",
               "ViewState": "AgIAACoAAAAAAAAAAAAIwEgAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-21T11:11:08.365Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-21T11:11:08.365Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "MainM.cs",
               "DocumentMoniker": "E:\\dev\\update _link_revits\\UpgradeUpdateRvt\\UpgradeUpdateRvt\\Model\\MainM.cs",
               "RelativeDocumentMoniker": "UpgradeUpdateRvt\\Model\\MainM.cs",
@@ -60,8 +76,7 @@
               "RelativeToolTip": "UpgradeUpdateRvt\\Model\\MainM.cs",
               "ViewState": "AgIAAJAAAAAAAAAAAAAiwKYAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-21T11:10:38.328Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-21T11:10:38.328Z"
             }
           ]
         }
