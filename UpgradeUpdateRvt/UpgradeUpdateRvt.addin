@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Command">
+    <Name>UpgradeUpdateRvt</Name>
+    <FullClassName>UpgradeUpdateRvt.Application</FullClassName>
+    <Text>UpgradeUpdateRvt</Text>
+    <Description>Places the Group at Particular Point</Description>
+    <VisibilityMode>AlwaysVisible</VisibilityMode>
+    <Assembly>.\UpgradeUpdateRvt.dll</Assembly>
+    <AddInId>502fe383-2648-4e98-adf8-5e6047f9dc34</AddInId>
+    <VendorId>ADSK</VendorId>
+    <VendorDescription>Autodesk, Inc, www.autodesk.com</VendorDescription>
+  </AddIn>
+
+  <AddIn Type="Command">
+    <Name>LinkRvtRvt</Name>
+    <FullClassName>UpgradeUpdateRvt.LinkRvt</FullClassName>
+    <Text>LinkRvtRvt</Text>
+    <Description>Places the Group at Particular Point</Description>
+    <VisibilityMode>AlwaysVisible</VisibilityMode>
+    <Assembly>.\UpgradeUpdateRvt.dll</Assembly>
+    <AddInId>502fe383-2648-4e98-adf8-5e6047f9dc50</AddInId>
+    <VendorId>ADSK</VendorId>
+    <VendorDescription>Autodesk, Inc, www.autodesk.com</VendorDescription>
+  </AddIn>
+  
+</RevitAddIns>
+
+

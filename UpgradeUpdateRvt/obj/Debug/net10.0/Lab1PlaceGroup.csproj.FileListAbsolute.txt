@@ -1,0 +1,12 @@
+E:\dev\update _link_revits\UpgradeUpdateRvt\UpgradeUpdateRvt\bin\Debug\net10.0\Lab1PlaceGroup.deps.json
+E:\dev\update _link_revits\UpgradeUpdateRvt\UpgradeUpdateRvt\bin\Debug\net10.0\Lab1PlaceGroup.dll
+E:\dev\update _link_revits\UpgradeUpdateRvt\UpgradeUpdateRvt\bin\Debug\net10.0\Lab1PlaceGroup.pdb
+E:\dev\update _link_revits\UpgradeUpdateRvt\UpgradeUpdateRvt\obj\Debug\net10.0\Lab1PlaceGroup.csproj.AssemblyReference.cache
+E:\dev\update _link_revits\UpgradeUpdateRvt\UpgradeUpdateRvt\obj\Debug\net10.0\Lab1PlaceGroup.GeneratedMSBuildEditorConfig.editorconfig
+E:\dev\update _link_revits\UpgradeUpdateRvt\UpgradeUpdateRvt\obj\Debug\net10.0\Lab1PlaceGroup.AssemblyInfoInputs.cache
+E:\dev\update _link_revits\UpgradeUpdateRvt\UpgradeUpdateRvt\obj\Debug\net10.0\Lab1PlaceGroup.AssemblyInfo.cs
+E:\dev\update _link_revits\UpgradeUpdateRvt\UpgradeUpdateRvt\obj\Debug\net10.0\Lab1PlaceGroup.csproj.CoreCompileInputs.cache
+E:\dev\update _link_revits\UpgradeUpdateRvt\UpgradeUpdateRvt\obj\Debug\net10.0\Lab1PlaceGroup.dll
+E:\dev\update _link_revits\UpgradeUpdateRvt\UpgradeUpdateRvt\obj\Debug\net10.0\refint\Lab1PlaceGroup.dll
+E:\dev\update _link_revits\UpgradeUpdateRvt\UpgradeUpdateRvt\obj\Debug\net10.0\Lab1PlaceGroup.pdb
+E:\dev\update _link_revits\UpgradeUpdateRvt\UpgradeUpdateRvt\obj\Debug\net10.0\ref\Lab1PlaceGroup.dll

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ApplicationPackage SchemaVersion="2.0" AutodeskProduct="Revit" Name="UpgradeUpdateRvt" Description="UpgradeUpdateRvt helps you to join, unjoin and joinswish all kind of elements." AppVersion="2.0" FriendlyVersion="2.0" ProductType="Application" SupportedLocales="Enu" AppNameSpace="appstore.exchange.autodesk.com" Author="BIMparadys" ProductCode="{80F3D9B5-AFD4-4DB4-869B-3D20CECF0E26}" UpgradeCode="{39363276-74B5-446B-9644-F62C4DE5A293}" HelpFile="./Contents/help.html" OnlineDocumentation="http://www.bimparadys.com/" Icon="./Contents/Ressources/icon.ico">
+  <CompanyDetails Name="BIMparadys" Email="contact@bimparadys.com" Url="http://www.bimparadys.com/" Phone=" " />
+  <RuntimeRequirements OS="Win64" Platform="Revit" SeriesMin="R2023" SeriesMax="R2026" />
+  <Components Description="2023 parts">
+    <RuntimeRequirements OS="Win64" Platform="Revit" SeriesMin="R2023" SeriesMax="R2023" />
+    <ComponentEntry AppName="UpgradeUpdateRvt" Version="2.0" ModuleName="./Contents/UpgradeUpdateRvt.addin" AppDescription="UpgradeUpdateRvt" />
+  </Components>
+  <Components Description="2024 parts">
+    <RuntimeRequirements OS="Win64" Platform="Revit" SeriesMin="R2024" SeriesMax="R2024" />
+    <ComponentEntry AppName="UpgradeUpdateRvt" Version="2.0" ModuleName="./Contents/UpgradeUpdateRvt.addin" AppDescription="UpgradeUpdateRvt" />
+  </Components>
+  <Components Description="2025 parts">
+    <RuntimeRequirements OS="Win64" Platform="Revit" SeriesMin="R2025" SeriesMax="R2025" />
+    <ComponentEntry AppName="UpgradeUpdateRvt" Version="2.0" ModuleName="./Contents/UpgradeUpdateRvt.addin" AppDescription="UpgradeUpdateRvt" />
+  </Components>
+  <Components Description="2026 parts">
+    <RuntimeRequirements OS="Win64" Platform="Revit" SeriesMin="R2026" SeriesMax="R2026" />
+    <ComponentEntry AppName="UpgradeUpdateRvt" Version="2.0" ModuleName="./Contents/UpgradeUpdateRvt.addin" AppDescription="UpgradeUpdateRvt" />
+  </Components>
+</ApplicationPackage>

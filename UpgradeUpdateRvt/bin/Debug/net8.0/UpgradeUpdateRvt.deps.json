@@ -1,0 +1,53 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "UpgradeUpdateRvt/1.0.0": {
+        "dependencies": {
+          "Revit_All_Main_Versions_API_x64": "2026.0.0"
+        },
+        "runtime": {
+          "UpgradeUpdateRvt.dll": {}
+        }
+      },
+      "Revit_All_Main_Versions_API_x64/2026.0.0": {
+        "runtime": {
+          "lib/net8.0/AdWindows.dll": {
+            "assemblyVersion": "5.2.0.2",
+            "fileVersion": "5.2.0.2"
+          },
+          "lib/net8.0/RevitAPI.dll": {
+            "assemblyVersion": "26.0.4.0",
+            "fileVersion": "26.0.4.409"
+          },
+          "lib/net8.0/RevitAPIUI.dll": {
+            "assemblyVersion": "26.0.4.0",
+            "fileVersion": "26.0.4.409"
+          },
+          "lib/net8.0/UIFramework.dll": {
+            "assemblyVersion": "26.0.4.0",
+            "fileVersion": "26.0.4.409"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "UpgradeUpdateRvt/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Revit_All_Main_Versions_API_x64/2026.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-R5Gabt6VEgHCFVym+5f0LkjeyfTFvueQGTkSphTXO2iIJAldQ+ETL2wbo/k2WmDjebZ/AgWnGDhJ3rcQiwPFig==",
+      "path": "revit_all_main_versions_api_x64/2026.0.0",
+      "hashPath": "revit_all_main_versions_api_x64.2026.0.0.nupkg.sha512"
+    }
+  }
+}

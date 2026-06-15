@@ -1,0 +1,98 @@
+﻿<Window x:Class="UpgradeUpdateRvt.LinkRvtUI"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Gestion des liens Revit" Height="520" Width="880"
+        WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip"
+        Background="#F5F7FA">
+
+    <Window.Resources>
+        <Style TargetType="TextBlock" x:Key="HeaderText">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="MinWidth" Value="120"/>
+            <Setter Property="Margin" Value="8"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Titre -->
+        <TextBlock Grid.Row="0" Text="Dossier des fichiers liés" Style="{StaticResource HeaderText}"/>
+
+        <!-- Chemin + Bouton Parcourir -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox Text="{Binding LinkModel.MainDirectory, UpdateSourceTrigger=PropertyChanged ,Mode=TwoWay}" 
+                     Margin="0,0,8,0" Padding="8" VerticalContentAlignment="Center"/>
+
+            <Button Grid.Column="1" Content="Parcourir..." Command="{Binding LinkBrowseFolderCommand}"/>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <CheckBox Grid.Row="1"  Content="Is IFCs Files" IsChecked="{Binding LinkModel.IsIfcFiles, Mode=TwoWay}" />
+
+        </Grid>
+        <!-- Liste des fichiers -->
+        <DataGrid Grid.Row="3" Margin="0,16,0,0"
+                  ItemsSource="{Binding LinkModel.ListFiles, UpdateSourceTrigger=PropertyChanged}"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  IsReadOnly="True"
+                  GridLinesVisibility="Horizontal"
+                  HeadersVisibility="Column"
+                  AlternatingRowBackground="#FAFCFF">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Nom du fichier" Binding="{Binding Filename}" Width="*"/>
+                <DataGridTextColumn Header="CorespondLink" Binding="{Binding CorespondLink.LinkName}" Width="*"/>
+                <DataGridTemplateColumn Header="Lié dans projet" Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <!-- CheckBox inside a template allows for immediate single-click interaction -->
+                            <CheckBox IsChecked="{Binding Linked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                      HorizontalAlignment="Center" 
+                      VerticalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Chargé" Width="60">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <!-- CheckBox inside a template allows for immediate single-click interaction -->
+                            <CheckBox IsChecked="{Binding Loaded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                      HorizontalAlignment="Center" 
+                      VerticalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Boutons actions -->
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+            <Button Content="Actualiser" Command="{Binding LinkRefreshCommand}"/>
+            <Button Content="Charger liens actuels"  Command="{Binding LoadCurrentLinksCommand}" Background="#4CAF50"  Foreground="White"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "UJbWDZXkYEU=",
+  "success": true,
+  "projectFilePath": "E:\\dev\\update _link_revits\\UpgradeUpdateRvt\\UpgradeUpdateRvt\\UpgradeUpdateRvt.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\imrwe\\.nuget\\packages\\revit_all_main_versions_api_x64\\2026.0.0\\revit_all_main_versions_api_x64.2026.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
