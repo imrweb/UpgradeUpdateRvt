@@ -1,0 +1,23 @@
+# Visual Studio
+.vs/
+
+# Build outputs
+bin/
+obj/
+**/bin/
+**/obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# ReSharper / Rider
+_ReSharper*/
+.idea/
+*.DotSettings.user
+
+# OS files
+Thumbs.db
+Desktop.ini
