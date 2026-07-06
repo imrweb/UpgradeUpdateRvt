@@ -23,19 +23,39 @@ namespace UpgradeUpdateRvt.Model
         // check for ifcs files
         private bool _IsIfcFiles;
         public bool IsIfcFiles { get { return _IsIfcFiles; } set { _IsIfcFiles = value; OnPropertyChanged("IsIfcFiles"); } }
+
+        private bool _IncludeSubdirectories;
+        public bool IncludeSubdirectories { get { return _IncludeSubdirectories; } set { _IncludeSubdirectories = value; OnPropertyChanged("IncludeSubdirectories"); } }
+
         public ObservableCollection<RvtLinks> ListFiles { get; set; } = new ObservableCollection<RvtLinks>();
         public ObservableCollection<DocLinks> DocLinks { get; set; } = new ObservableCollection<DocLinks>();
+        public void ReloadFiles()
+        {
+            if (IsIfcFiles)
+            {
+                LoadIfcFiles();
+            }
+            else
+            {
+                LoadFiles();
+            }
+        }
+
         public void LoadIfcFiles()
         {
-            var files = Directory.GetFiles(MainDirectory, "*.ifc", SearchOption.TopDirectoryOnly);
+            if (string.IsNullOrEmpty(MainDirectory)) return;
+            var searchOption = IncludeSubdirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+            var files = Directory.GetFiles(MainDirectory, "*.ifc", searchOption);
             ListFiles.Clear();
             foreach (var file in files)
             {
                 string filename = Path.GetFileName(file);
+                string relativeFolder = GetRelativeFolder(file);
                 ListFiles.Add(new RvtLinks
                 {
                     FilePath = file,
                     Filename = filename,
+                    SubFolder = relativeFolder,
                     Linked = false
                 });
             }
@@ -43,7 +63,8 @@ namespace UpgradeUpdateRvt.Model
         public void LoadFiles()
         {
             if (string.IsNullOrEmpty(MainDirectory)) return;
-            var files = Directory.GetFiles(MainDirectory, "*.rvt", SearchOption.TopDirectoryOnly);
+            var searchOption = IncludeSubdirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+            var files = Directory.GetFiles(MainDirectory, "*.rvt", searchOption);
             ListFiles.Clear();
             foreach (var file in files)
             {
@@ -54,16 +75,29 @@ namespace UpgradeUpdateRvt.Model
                 // Optionnel : exclure aussi le fichier central actif
                 if (filename == LinkRvt.docout?.Title + ".rvt")
                     continue;
+                string relativeFolder = GetRelativeFolder(file);
                 ListFiles.Add(new RvtLinks
                 {
                     FilePath = file,
                     Filename = filename,
+                    SubFolder = relativeFolder,
                     Linked = false
                 });
             }
         }
+
+        private string GetRelativeFolder(string file)
+        {
+            if (!IncludeSubdirectories) return "";
+
+            string fileDirectory = Path.GetDirectoryName(file);
+            string relativeFolder = Path.GetRelativePath(MainDirectory, fileDirectory);
+            return relativeFolder == "." ? "" : relativeFolder;
+        }
+
         public void LinkedRvt(Document doc)
         {
+            DocLinks.Clear();
             FilteredElementCollector collector = new FilteredElementCollector(doc);
             ICollection<Element> linkedInstances = collector.OfClass(typeof(RevitLinkInstance)).ToElements();
             foreach (Element elem in linkedInstances)
@@ -163,6 +197,7 @@ namespace UpgradeUpdateRvt.Model
         // autres propriétés (simplifiées ici)
         public string FilePath { get; set; } = "";
         public string Filename { get; set; } = "";
+        public string SubFolder { get; set; } = "";
         public DocLinks CorrespondLink { get; set; } = null;
         protected virtual void OnPropertyChanged(string propertyName)
         {

@@ -93,6 +93,9 @@ namespace UpgradeUpdateRvt.Model
         private bool _SaveInSameFolder;
         public bool SaveInSameFolder { get { return _SaveInSameFolder; } set { _SaveInSameFolder = value; OnPropertyChanged("SaveInSameFolder"); } }
 
+        private bool _RelinquishOwnershipAfterSave = true;
+        public bool RelinquishOwnershipAfterSave { get { return _RelinquishOwnershipAfterSave; } set { _RelinquishOwnershipAfterSave = value; OnPropertyChanged("RelinquishOwnershipAfterSave"); } }
+
         private bool _EnableCleanup;
         public bool EnableCleanup { get { return _EnableCleanup; } set { _EnableCleanup = value; OnPropertyChanged("EnableCleanup"); } }
 
@@ -310,6 +313,10 @@ namespace UpgradeUpdateRvt.Model
                 if (File.Exists(savePath))
                 {
                     fichier.Status = "Déjà converti (passé)";
+                    if (RelinquishOwnershipAfterSave)
+                    {
+                        RelinquishExistingConvertedFile(savePath, fichier);
+                    }
                     i++;
                     iP++;
                     prgs.Chanage1(iP, this.ListFiles.Count, string.Format("Upgrad: {0} / Not Upgrad: {1} From ({2})", i, n, this.ListFiles.Count));
@@ -335,6 +342,18 @@ namespace UpgradeUpdateRvt.Model
                     doc.SaveAs(savePath, saveOpts);
                     fichier.Converted = true;
                     fichier.Status = "Succès";
+                    if (doc.IsWorkshared && RelinquishOwnershipAfterSave)
+                    {
+                        try
+                        {
+                            RelinquishOwnedWorksets(doc);
+                            fichier.Status = "Succès (propriétés abandonnées)";
+                        }
+                        catch (Exception relinquishEx)
+                        {
+                            fichier.Status = "Succès (abandon impossible : " + relinquishEx.Message + ")";
+                        }
+                    }
                     i++;
                 }
                 catch (Exception ex)
@@ -380,6 +399,58 @@ namespace UpgradeUpdateRvt.Model
             prgs.MessageText(false, render.ToString());
             prgs.Finish();
 
+        }
+
+        private void RelinquishOwnedWorksets(Document doc)
+        {
+            RelinquishOptions relinquishOptions = new RelinquishOptions(true)
+            {
+                CheckedOutElements = true,
+                FamilyWorksets = true,
+                StandardWorksets = true,
+                UserWorksets = true,
+                ViewWorksets = true
+            };
+
+            WorksharingUtils.RelinquishOwnership(doc, relinquishOptions, new TransactWithCentralOptions());
+        }
+
+        private void RelinquishExistingConvertedFile(string filePath, RvtFiles fichier)
+        {
+            Document doc = null;
+            try
+            {
+                ModelPath modelPath = ModelPathUtils.ConvertUserVisiblePathToModelPath(filePath);
+                doc = Application.uiAppout.Application.OpenDocumentFile(modelPath, new OpenOptions());
+                fichier.Workshared = doc.IsWorkshared;
+
+                if (!doc.IsWorkshared)
+                {
+                    fichier.Status = "Déjà converti (non partagé)";
+                    return;
+                }
+
+                RelinquishOwnedWorksets(doc);
+                fichier.Status = "Déjà converti (propriétés abandonnées)";
+            }
+            catch (Exception ex)
+            {
+                fichier.Status = "Déjà converti (abandon impossible : " + ex.Message + ")";
+            }
+            finally
+            {
+                if (doc != null)
+                {
+                    try
+                    {
+                        doc.Close(false);
+                    }
+                    catch
+                    {
+                        // Ignorer en cas d'erreur de fermeture
+                    }
+                }
+            }
         }
 
         private bool NameMatchesPattern(string name, string pattern)

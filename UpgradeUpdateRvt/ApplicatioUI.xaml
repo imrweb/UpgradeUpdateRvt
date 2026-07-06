@@ -5,237 +5,438 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UpgradeUpdateRvt"
         mc:Ignorable="d"
-        Title="Mise à jour / Upgrade Revit Files" Height="620" Width="1000"
+        Title="Upgrade Revit Files" Height="800" Width="1260"
+        MinHeight="700" MinWidth="1100"
         WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip"
-        Background="#F5F7FA">
+        FontFamily="Segoe UI"
+        Background="#EEF2F7">
     <Window.Resources>
-        <Style TargetType="TextBlock" x:Key="HeaderText">
-            <Setter Property="FontSize" Value="16"/>
+        <SolidColorBrush x:Key="InkBrush" Color="#111827"/>
+        <SolidColorBrush x:Key="MutedBrush" Color="#64748B"/>
+        <SolidColorBrush x:Key="PanelBrush" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="LineBrush" Color="#D9E2EC"/>
+        <SolidColorBrush x:Key="PrimaryBrush" Color="#2563EB"/>
+        <SolidColorBrush x:Key="PrimaryHoverBrush" Color="#1D4ED8"/>
+        <SolidColorBrush x:Key="DangerBrush" Color="#DC2626"/>
+        <SolidColorBrush x:Key="DangerHoverBrush" Color="#B91C1C"/>
+        <DropShadowEffect x:Key="CardShadow" Color="#1E293B" BlurRadius="18" ShadowDepth="4" Opacity="0.12"/>
+
+        <Style TargetType="TextBlock" x:Key="SectionTitle">
+            <Setter Property="FontSize" Value="17"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Margin" Value="0,0,0,12"/>
+            <Setter Property="Foreground" Value="{StaticResource InkBrush}"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
         </Style>
 
-        <Style TargetType="Button">
-            <Setter Property="Padding" Value="16,8"/>
-            <Setter Property="MinWidth" Value="120"/>
-            <Setter Property="Margin" Value="8"/>
+        <Style TargetType="TextBlock" x:Key="HintText">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="{StaticResource MutedBrush}"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
-        <!-- Ajout d'un style local pour remplacer MaterialDesignRaisedAccentButton -->
-        <Style x:Key="RaisedAccentButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-            <Setter Property="Background" Value="#4CAF50"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Effect">
+
+        <Style TargetType="Border" x:Key="Card">
+            <Setter Property="Background" Value="{StaticResource PanelBrush}"/>
+            <Setter Property="CornerRadius" Value="16"/>
+            <Setter Property="Padding" Value="18"/>
+            <Setter Property="Effect" Value="{StaticResource CardShadow}"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="MinHeight" Value="38"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="#F8FAFC"/>
+            <Setter Property="BorderBrush" Value="{StaticResource LineBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="{StaticResource InkBrush}"/>
+            <Setter Property="Template">
                 <Setter.Value>
-                    <DropShadowEffect Color="#333" BlurRadius="8" ShadowDepth="2"/>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="0"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                    <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+                    <Setter Property="Background" Value="#FFFFFF"/>
+                </Trigger>
+                <Trigger Property="IsReadOnly" Value="True">
+                    <Setter Property="Foreground" Value="#475569"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="#334155"/>
+            <Setter Property="FontSize" Value="12.5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,14,0"/>
+        </Style>
+
+        <Style TargetType="Button" x:Key="ButtonBase">
+            <Setter Property="MinHeight" Value="38"/>
+            <Setter Property="MinWidth" Value="120"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Root"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Root" Property="Opacity" Value="0.92"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Root" Property="Opacity" Value="0.82"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Root" Property="Opacity" Value="0.55"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style TargetType="Button" BasedOn="{StaticResource ButtonBase}">
+            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="Foreground" Value="#1E293B"/>
+            <Setter Property="BorderBrush" Value="{StaticResource LineBrush}"/>
+        </Style>
+
+        <Style TargetType="Button" x:Key="RaisedAccentButton" BasedOn="{StaticResource ButtonBase}">
+            <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+        </Style>
+
+        <Style TargetType="Button" x:Key="DangerButton" BasedOn="{StaticResource ButtonBase}">
+            <Setter Property="Background" Value="{StaticResource DangerBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource DangerBrush}"/>
+        </Style>
+
+        <Style TargetType="TabControl">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+        <Style TargetType="TabItem">
+            <Setter Property="Foreground" Value="#475569"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="18,10"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border x:Name="TabBorder" Background="#E2E8F0" CornerRadius="12,12,0,0" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter ContentSource="Header" HorizontalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="TabBorder" Property="Background" Value="White"/>
+                                <Setter Property="Foreground" Value="{StaticResource PrimaryBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="TabBorder" Property="Background" Value="#F8FAFC"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="GroupBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="GroupBox">
+                        <Border Style="{StaticResource Card}" Margin="0,0,0,16">
+                            <DockPanel>
+                                <TextBlock DockPanel.Dock="Top"
+                                           Text="{TemplateBinding Header}"
+                                           Style="{StaticResource SectionTitle}"/>
+                                <ContentPresenter/>
+                            </DockPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="DataGrid">
+            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="BorderBrush" Value="{StaticResource LineBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#E5EAF0"/>
+            <Setter Property="RowBackground" Value="#FFFFFF"/>
+            <Setter Property="AlternatingRowBackground" Value="#F8FAFC"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="RowHeight" Value="34"/>
+            <Setter Property="ColumnHeaderHeight" Value="38"/>
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#F1F5F9"/>
+            <Setter Property="Foreground" Value="#334155"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="Padding" Value="10,0"/>
+        </Style>
+
+        <Style TargetType="DataGridCell">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
     </Window.Resources>
-    <Grid Margin="16">
+
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/> <!-- Row 0: Title -->
-            <RowDefinition Height="*"/>    <!-- Row 1: TabControl -->
-            <RowDefinition Height="Auto"/> <!-- Row 2: Action Buttons -->
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Titre -->
-        <TextBlock Grid.Row="0" Text="Dossier de projet" Style="{StaticResource HeaderText}"/>
+        <Border Grid.Row="0" Background="#0F172A" Padding="24,22">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Text="Upgrade Revit Files" FontSize="24" FontWeight="Bold" Foreground="White"/>
+                    <TextBlock Text="Conversion par lot, gestion des dossiers récursifs et abandon automatique des propriétés worksharing."
+                               Foreground="#CBD5E1" Margin="0,6,0,0"/>
+                </StackPanel>
+                <Border Grid.Column="1" Background="#1E293B" CornerRadius="18" Padding="14,8" VerticalAlignment="Center">
+                    <TextBlock Text="Revit 2026" Foreground="#BFDBFE" FontWeight="SemiBold"/>
+                </Border>
+            </Grid>
+        </Border>
 
-        <!-- TabControl -->
-        <TabControl Grid.Row="1" Background="Transparent" BorderThickness="0" Margin="0,0,0,12">
-            <!-- Onglet 1 : Conversion -->
-            <TabItem Header="Conversion en lot" Padding="16,8">
-                <Grid Margin="0,12,0,0">
+        <TabControl Grid.Row="1" Margin="20,16,20,18">
+            <TabItem Header="Conversion en lot">
+                <Grid Margin="0,14,0,0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/> <!-- Folder Selection -->
-                        <RowDefinition Height="*"/>    <!-- DataGrid -->
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <!-- Sélection du dossier -->
-                    <Grid Grid.Row="0" Margin="0,0,0,12">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+                    <Border Grid.Row="0" Style="{StaticResource Card}" Margin="0,0,0,12" Padding="16">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
 
-                        <TextBox Grid.Column="0" 
-                          Text="{Binding Init.MainPath, UpdateSourceTrigger=PropertyChanged}" 
-                          Padding="8" 
-                          VerticalContentAlignment="Center"
-                          IsReadOnly="True"/>
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,14,10">
+                                <TextBlock Text="Dossier source" Style="{StaticResource SectionTitle}"/>
+                                <TextBlock Text="Sélectionnez le dossier projet. Les options ci-dessous contrôlent le scan, la destination et l'abandon des propriétés." Style="{StaticResource HintText}"/>
+                            </StackPanel>
 
-                        <Button Grid.Column="1" 
-                         Content="Parcourir..." 
-                         Command="{Binding BrowseFolderCommand}"
-                         Margin="8,0"/>
+                            <Button Grid.Row="0" Grid.Column="1"
+                                    Content="Parcourir..."
+                                    Command="{Binding BrowseFolderCommand}"
+                                    VerticalAlignment="Top"/>
 
-                        <CheckBox Grid.Column="2"
-                                   Content="Inclure les sous-dossiers"
-                                   IsChecked="{Binding Init.IncludeSubdirectories, Mode=TwoWay}"
-                                   VerticalAlignment="Center"
-                                   Margin="8,0,8,0"/>
+                            <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                     Text="{Binding Init.MainPath, UpdateSourceTrigger=PropertyChanged}"
+                                     IsReadOnly="True"
+                                     Margin="0,0,0,10"/>
 
-                        <CheckBox Grid.Column="3"
-                                   Content="Enregistrer dans le même dossier (écraser)"
-                                   IsChecked="{Binding Init.SaveInSameFolder, Mode=TwoWay}"
-                                   VerticalAlignment="Center"
-                                   Margin="8,0,0,0"/>
-                    </Grid>
+                            <WrapPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                                <CheckBox Content="Inclure les sous-dossiers"
+                                          IsChecked="{Binding Init.IncludeSubdirectories, Mode=TwoWay}" Checked="CheckBox_Checked"/>
+                                <CheckBox Content="Enregistrer dans le même dossier (écraser)"
+                                          IsChecked="{Binding Init.SaveInSameFolder, Mode=TwoWay}"/>
+                                <CheckBox Content="Abandonner éléments/sous-projets"
+                                          IsChecked="{Binding Init.RelinquishOwnershipAfterSave, Mode=TwoWay}"/>
+                            </WrapPanel>
+                        </Grid>
+                    </Border>
 
-                    <!-- Liste des fichiers -->
-                    <DataGrid Grid.Row="1" Margin="0,4,0,0"
-                              ItemsSource="{Binding Init.ListFiles, UpdateSourceTrigger=PropertyChanged}"
-                              AutoGenerateColumns="False"
-                              CanUserAddRows="False"
-                              IsReadOnly="True"
-                              GridLinesVisibility="Horizontal"
-                              HeadersVisibility="Column"
-                              AlternatingRowBackground="#FAFCFF">
+                    <Border Grid.Row="1" Style="{StaticResource Card}" Padding="0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <DockPanel Grid.Row="0" Margin="18,14,18,8">
+                                <TextBlock Text="Fichiers détectés" Style="{StaticResource SectionTitle}" DockPanel.Dock="Left"/>
+                                <TextBlock Text="Le statut se met à jour pendant la conversion." Style="{StaticResource HintText}" HorizontalAlignment="Right"/>
+                            </DockPanel>
 
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Sous-dossier"     Binding="{Binding SubFolder}"      Width="150"/>
-                            <DataGridTextColumn Header="Fichier original" Binding="{Binding OriginFilename}" Width="*"/>
-                            <DataGridTextColumn Header="Nouveau nom"     Binding="{Binding NewFileName}"    Width="*"/>
-                            <DataGridCheckBoxColumn Header="Workshared"   Binding="{Binding Workshared}"   Width="90"/>
-                            <DataGridCheckBoxColumn Header="Converti"     Binding="{Binding Converted}"     Width="90"/>
-                            <DataGridTextColumn Header="Statut"           Binding="{Binding Status}"       Width="120"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                            <DataGrid Grid.Row="1"
+                                      ItemsSource="{Binding Init.ListFiles, UpdateSourceTrigger=PropertyChanged}"
+                                      AutoGenerateColumns="False"
+                                      Margin="18,0,18,18"
+                                      MinHeight="460">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Sous-dossier" Binding="{Binding SubFolder}" Width="170"/>
+                                    <DataGridTextColumn Header="Fichier original" Binding="{Binding OriginFilename}" Width="*"/>
+                                    <DataGridTextColumn Header="Nouveau nom" Binding="{Binding NewFileName}" Width="*"/>
+                                    <DataGridCheckBoxColumn Header="Workshared" Binding="{Binding Workshared}" Width="95"/>
+                                    <DataGridCheckBoxColumn Header="Converti" Binding="{Binding Converted}" Width="90"/>
+                                    <DataGridTextColumn Header="Statut" Binding="{Binding Status}" Width="240"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </Border>
                 </Grid>
             </TabItem>
 
-            <!-- Onglet 2 : Renommage -->
-            <TabItem Header="Renommage des fichiers" Padding="16,8">
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,12,0,0">
-                    <StackPanel>
-                        <!-- Options de renommage -->
-                        <GroupBox Header="Options de renommage des fichiers" Margin="0,0,0,16" Padding="12">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
+            <TabItem Header="Renommage">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,14,0,0">
+                    <GroupBox Header="Options de renommage des fichiers">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="18"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Préfixe :" VerticalAlignment="Center" Margin="0,0,8,12"/>
-                                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Init.Prefix, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,24,12" Padding="6"/>
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,14">
+                                <TextBlock Text="Préfixe" FontWeight="SemiBold" Foreground="{StaticResource InkBrush}" Margin="0,0,0,6"/>
+                                <TextBox Text="{Binding Init.Prefix, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
 
-                                <TextBlock Grid.Row="0" Grid.Column="2" Text="Suffixe :" VerticalAlignment="Center" Margin="0,0,8,12"/>
-                                <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding Init.Suffix, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,12" Padding="6"/>
+                            <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,14">
+                                <TextBlock Text="Suffixe" FontWeight="SemiBold" Foreground="{StaticResource InkBrush}" Margin="0,0,0,6"/>
+                                <TextBox Text="{Binding Init.Suffix, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
 
-                                <TextBlock Grid.Row="1" Grid.Column="2" Text="Remplacer par :" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Init.ReplaceText, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,0" Padding="6"/>
+                            <StackPanel Grid.Row="1" Grid.Column="0">
+                                <TextBlock Text="Rechercher" FontWeight="SemiBold" Foreground="{StaticResource InkBrush}" Margin="0,0,0,6"/>
+                                <TextBox Text="{Binding Init.FindText, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
 
-                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Rechercher :" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Init.FindText, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,24,0" Padding="6"/>
-                            </Grid>
-                        </GroupBox>
-                    </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="2">
+                                <TextBlock Text="Remplacer par" FontWeight="SemiBold" Foreground="{StaticResource InkBrush}" Margin="0,0,0,6"/>
+                                <TextBox Text="{Binding Init.ReplaceText, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"
+                                       Text="Aperçu automatique dans la colonne Nouveau nom de l'onglet Conversion."
+                                       Style="{StaticResource HintText}"
+                                       Margin="0,16,0,0"/>
+                        </Grid>
+                    </GroupBox>
                 </ScrollViewer>
             </TabItem>
 
-            <!-- Onglet 3 : Nettoyage -->
-            <TabItem Header="Nettoyage après conversion" Padding="16,8">
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,12,0,0">
+            <TabItem Header="Nettoyage">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,14,0,0">
                     <StackPanel>
-                        <!-- Options de nettoyage -->
-                        <GroupBox Header="Options de nettoyage après conversion" Margin="0,0,0,12" Padding="12">
+                        <GroupBox Header="Nettoyage automatique après conversion">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                
-                                <CheckBox Grid.Row="0" 
-                                          Content="Activer le nettoyage automatique après la conversion" 
+
+                                <CheckBox Grid.Row="0"
+                                          Content="Activer le nettoyage automatique après la conversion"
                                           IsChecked="{Binding Init.EnableCleanup, Mode=TwoWay}"
-                                          Margin="0,0,0,16"
-                                          VerticalAlignment="Center"
+                                          Margin="0,0,0,14"
                                           FontWeight="SemiBold"/>
 
                                 <Grid Grid.Row="1" IsEnabled="{Binding Init.EnableCleanup}">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="270"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" 
-                                               Text="Noms / motifs à supprimer (séparés par des virgules) :" 
-                                               VerticalAlignment="Center" 
-                                               Margin="0,0,12,0"/>
-                                    <TextBox Grid.Column="1" 
-                                             Text="{Binding Init.CleanupPatterns, UpdateSourceTrigger=PropertyChanged}" 
-                                             Padding="6"
-                                             VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="0"
+                                               Text="Noms / motifs à supprimer"
+                                               Foreground="{StaticResource InkBrush}"
+                                               FontWeight="SemiBold"
+                                               VerticalAlignment="Center"/>
+                                    <TextBox Grid.Column="1"
+                                             Text="{Binding Init.CleanupPatterns, UpdateSourceTrigger=PropertyChanged}"/>
                                 </Grid>
                             </Grid>
                         </GroupBox>
 
-                        <!-- Actions de nettoyage manuel -->
-                        <GroupBox Header="Nettoyage interactif manuel" Margin="0,8,0,0" Padding="12">
+                        <GroupBox Header="Nettoyage interactif manuel">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/> <!-- Description & Analyze Button -->
-                                    <RowDefinition Height="220"/>  <!-- DataGrid for matches -->
-                                    <RowDefinition Height="Auto"/> <!-- Execute Button -->
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="240"/>
+                                    <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
 
-                                <!-- Row 0: Description & Analyse -->
-                                <Grid Grid.Row="0" Margin="0,0,0,12">
+                                <Grid Grid.Row="0" Margin="0,0,0,14">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" 
-                                               Text="Analysez le répertoire sélectionné pour trouver les fichiers/dossiers correspondants aux motifs définis ci-dessus, puis décochez ceux que vous souhaitez conserver." 
-                                               TextWrapping="Wrap" FontStyle="Italic" Foreground="#555" VerticalAlignment="Center"/>
-                                    <Button Grid.Column="1" 
-                                            Content="Analyser le dossier" 
-                                            Command="{Binding ScanCleanupCommand}" 
-                                            VerticalAlignment="Center" Margin="12,0,0,0"/>
+                                    <TextBlock Grid.Column="0"
+                                               Text="Analysez le dossier sélectionné, puis décochez les éléments à conserver avant suppression."
+                                               Style="{StaticResource HintText}"
+                                               VerticalAlignment="Center"/>
+                                    <Button Grid.Column="1"
+                                            Content="Analyser le dossier"
+                                            Command="{Binding ScanCleanupCommand}"
+                                            Margin="16,0,0,0"/>
                                 </Grid>
 
-                                <!-- Row 1: DataGrid -->
-                                <DataGrid Grid.Row="1" 
-                                          Height="200"
+                                <DataGrid Grid.Row="1"
                                           ItemsSource="{Binding Init.CleanupList, UpdateSourceTrigger=PropertyChanged}"
                                           AutoGenerateColumns="False"
-                                          CanUserAddRows="False"
-                                          GridLinesVisibility="Horizontal"
-                                          HeadersVisibility="Column"
-                                          AlternatingRowBackground="#FAFCFF"
-                                          Margin="0,0,0,12">
+                                          Margin="0,0,0,14"
+                                          IsReadOnly="False">
                                     <DataGrid.Columns>
-                                        <DataGridTemplateColumn Header="Supprimer" Width="80">
+                                        <DataGridTemplateColumn Header="Supprimer" Width="90">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                              HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                              HorizontalAlignment="Center"
+                                                              VerticalAlignment="Center"/>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTextColumn Header="Nom" Binding="{Binding Name}" Width="200" IsReadOnly="True"/>
-                                        <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="80" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Nom" Binding="{Binding Name}" Width="220" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="90" IsReadOnly="True"/>
                                         <DataGridTextColumn Header="Chemin relatif" Binding="{Binding RelativePath}" Width="*" IsReadOnly="True"/>
-                                        <DataGridTextColumn Header="Motif correspondant" Binding="{Binding Pattern}" Width="150" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Motif" Binding="{Binding Pattern}" Width="160" IsReadOnly="True"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
 
-                                <!-- Row 2: Execute Action -->
                                 <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                                    <Button Content="Supprimer les éléments sélectionnés" 
+                                    <Button Content="Supprimer les éléments sélectionnés"
                                             Command="{Binding CleanupCommand}"
-                                            Style="{StaticResource RaisedAccentButton}"
-                                            Background="#D32F2F"
-                                            Margin="0"/>
+                                            Style="{StaticResource DangerButton}"/>
                                 </StackPanel>
                             </Grid>
                         </GroupBox>
@@ -244,11 +445,27 @@
             </TabItem>
         </TabControl>
 
-        <!-- Boutons actions -->
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
-            <Button Content="Actualiser" Command="{Binding RefreshCommand}"/>
-            <Button Content="Lancer la conversion" Command="{Binding ConvertCommand}" 
-                    Style="{StaticResource RaisedAccentButton}"/>
-        </StackPanel>
+        <Border Grid.Row="2" Background="#FFFFFF" BorderBrush="#E2E8F0" BorderThickness="0,1,0,0" Padding="24,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Conseil : utilisez le nettoyage manuel avant de lancer une suppression définitive."
+                           Style="{StaticResource HintText}"
+                           VerticalAlignment="Center"/>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Actualiser"
+                            Command="{Binding RefreshCommand}"
+                            Margin="0,0,10,0"/>
+                    <Button Content="Lancer la conversion"
+                            Command="{Binding ConvertCommand}"
+                            Style="{StaticResource RaisedAccentButton}"
+                            MinWidth="170"/>
+                </StackPanel>
+            </Grid>
+        </Border>
     </Grid>
 </Window>

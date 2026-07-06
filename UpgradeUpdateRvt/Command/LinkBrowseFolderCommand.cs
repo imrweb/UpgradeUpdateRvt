@@ -44,15 +44,7 @@ namespace UpgradeUpdateRvt.Command
             {
                 // Retourne le chemin complet du dossier sélectionné
                 _linkRvtVM.LinkModel.MainDirectory = dialogue.FolderName;
-                if (_linkRvtVM.LinkModel.IsIfcFiles)
-                {
-                    _linkRvtVM.LinkModel.LoadIfcFiles();
-
-                }
-                else
-                {
-                    _linkRvtVM.LinkModel.LoadFiles();
-                }
+                _linkRvtVM.LinkModel.ReloadFiles();
 
             }
 

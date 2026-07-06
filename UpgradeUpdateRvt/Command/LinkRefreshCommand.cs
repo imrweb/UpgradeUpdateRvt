@@ -28,6 +28,7 @@ namespace UpgradeUpdateRvt.Command
 
         public void Execute(object parameter)
         {
+            _linkRvtVM.LinkModel.ReloadFiles();
             _linkRvtVM.LinkModel.LinkedRvt(_linkRvtVM._currentDoc);
 
             foreach (RvtLinks linkfile in _linkRvtVM.LinkModel.ListFiles)
