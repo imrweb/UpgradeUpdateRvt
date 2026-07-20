@@ -14,6 +14,8 @@ namespace UpgradeUpdateRvt.ViewModel
         public ICommand BrowseFolderCommand { get; set; }
         public ICommand CleanupCommand { get; set; }
         public ICommand ScanCleanupCommand { get; set; }
+        public ICommand SelectAllFilesCommand { get; set; }
+        public ICommand UnselectAllFilesCommand { get; set; }
         public  MainM Init { get; set; }
         public MainVM()
         {
@@ -25,6 +27,8 @@ namespace UpgradeUpdateRvt.ViewModel
             BrowseFolderCommand = new Command.BrowseFolderCommand(this);
             CleanupCommand = new Command.CleanupCommand(this);
             ScanCleanupCommand = new Command.ScanCleanupCommand(this);
+            SelectAllFilesCommand = new Command.SelectAllFilesCommand(this);
+            UnselectAllFilesCommand = new Command.UnselectAllFilesCommand(this);
 
 
         }

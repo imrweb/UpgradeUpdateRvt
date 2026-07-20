@@ -144,6 +144,7 @@ namespace UpgradeUpdateRvt.Model
                         OriginFilename = filename,
                         SubFolder = relativeFolder,
                         NewFileName = "",
+                        Selected = true,
                         Workshared = false,
                         Converted = false,
                         Status = "En attente"
@@ -160,6 +161,12 @@ namespace UpgradeUpdateRvt.Model
         {
             foreach (RvtFiles fichier in this.ListFiles)
             {
+                if (!fichier.Selected)
+                {
+                    fichier.Status = "Non sélectionné";
+                    continue;
+                }
+
                 string nomActuel = Path.GetFileName(fichier.FilePath);
 
                 // Si le préfixe existe déjà → on skip mais on renseigne TempFilename
@@ -183,6 +190,9 @@ namespace UpgradeUpdateRvt.Model
             // 1. Gérer les fichiers de notre liste de manière ciblée
             foreach (RvtFiles fichier in this.ListFiles)
             {
+                if (!fichier.Selected)
+                    continue;
+
                 if (string.IsNullOrEmpty(fichier.TempFilename) || !File.Exists(fichier.TempFilename))
                     continue;
 
@@ -262,6 +272,12 @@ namespace UpgradeUpdateRvt.Model
         {
             foreach (RvtFiles fichier in this.ListFiles)
             {
+                if (!fichier.Selected)
+                {
+                    fichier.NewFileName = "";
+                    continue;
+                }
+
                 string nomActuel = Path.GetFileNameWithoutExtension(fichier.FilePath);
                 string extension = Path.GetExtension(fichier.FilePath);
 
@@ -285,9 +301,14 @@ namespace UpgradeUpdateRvt.Model
             int i = 0;
             int iP = 0;
             int n = 0;
+            List<RvtFiles> selectedFiles = this.ListFiles.Where(f => f.Selected).ToList();
             prgs.Run(false, FileName);
             prgs.MessageText(false, "Please wait ..");
-            foreach (RvtFiles fichier in this.ListFiles)
+            foreach (RvtFiles fichier in this.ListFiles.Where(f => !f.Selected))
+            {
+                fichier.Status = "Non sélectionné";
+            }
+            foreach (RvtFiles fichier in selectedFiles)
             {
                 fichier.Status = "En cours...";
                 string targetDir = Path.GetDirectoryName(fichier.FilePath);
@@ -319,7 +340,7 @@ namespace UpgradeUpdateRvt.Model
                     }
                     i++;
                     iP++;
-                    prgs.Chanage1(iP, this.ListFiles.Count, string.Format("Upgrad: {0} / Not Upgrad: {1} From ({2})", i, n, this.ListFiles.Count));
+                    prgs.Chanage1(iP, selectedFiles.Count, string.Format("Upgrad: {0} / Not Upgrad: {1} From ({2})", i, n, selectedFiles.Count));
                     continue;
                 }
 
@@ -377,7 +398,7 @@ namespace UpgradeUpdateRvt.Model
                     }
                 }
                 iP++;
-                prgs.Chanage1(iP, this.ListFiles.Count, string.Format("Upgrad: {0} / Not Upgrad: {1} From ({2})", i, n, this.ListFiles.Count));
+                prgs.Chanage1(iP, selectedFiles.Count, string.Format("Upgrad: {0} / Not Upgrad: {1} From ({2})", i, n, selectedFiles.Count));
                 if (prgs.Cancellation()) 
                 {
                     fichier.Status = "Annulé";
@@ -540,7 +561,7 @@ namespace UpgradeUpdateRvt.Model
 
                     // Ne surtout pas supprimer nos nouveaux fichiers convertis !
                     bool isNewConvertedFile = false;
-                    foreach (RvtFiles fichier in this.ListFiles)
+                    foreach (RvtFiles fichier in this.ListFiles.Where(f => f.Selected))
                     {
                         if (fichier.Converted)
                         {
@@ -646,7 +667,7 @@ namespace UpgradeUpdateRvt.Model
 
                 // Sécurité : Ne pas lister nos nouveaux fichiers convertis ou temporaires
                 bool isNewConvertedFile = false;
-                foreach (RvtFiles fichier in this.ListFiles)
+                foreach (RvtFiles fichier in this.ListFiles.Where(f => f.Selected))
                 {
                     if (fichier.Converted)
                     {
@@ -786,6 +807,9 @@ namespace UpgradeUpdateRvt.Model
     {
         private Document _docRvt;
         public Document DocRvt { get { return _docRvt; } set { _docRvt = value; OnPropertyChanged("DocRvt"); } }
+
+        private bool _selected = true;
+        public bool Selected { get { return _selected; } set { _selected = value; OnPropertyChanged("Selected"); } }
 
         private string _originFilename = "";
         public string OriginFilename { get { return _originFilename; } set { _originFilename = value; OnPropertyChanged("OriginFilename"); } }

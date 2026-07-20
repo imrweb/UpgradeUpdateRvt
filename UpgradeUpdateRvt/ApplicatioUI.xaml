@@ -273,7 +273,7 @@
 
                             <WrapPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
                                 <CheckBox Content="Inclure les sous-dossiers"
-                                          IsChecked="{Binding Init.IncludeSubdirectories, Mode=TwoWay}" Checked="CheckBox_Checked"/>
+                                          IsChecked="{Binding Init.IncludeSubdirectories, Mode=TwoWay}"/>
                                 <CheckBox Content="Enregistrer dans le même dossier (écraser)"
                                           IsChecked="{Binding Init.SaveInSameFolder, Mode=TwoWay}"/>
                                 <CheckBox Content="Abandonner éléments/sous-projets"
@@ -290,21 +290,37 @@
                             </Grid.RowDefinitions>
                             <DockPanel Grid.Row="0" Margin="18,14,18,8">
                                 <TextBlock Text="Fichiers détectés" Style="{StaticResource SectionTitle}" DockPanel.Dock="Left"/>
-                                <TextBlock Text="Le statut se met à jour pendant la conversion." Style="{StaticResource HintText}" HorizontalAlignment="Right"/>
+                                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                                    <TextBlock Text="Cochez uniquement les maquettes à upgrader." Style="{StaticResource HintText}" Margin="0,0,12,0" VerticalAlignment="Center"/>
+                                    <Button Content="Tout sélectionner" Command="{Binding SelectAllFilesCommand}" Padding="12,6" Margin="0,0,6,0"/>
+                                    <Button Content="Tout décocher" Command="{Binding UnselectAllFilesCommand}" Padding="12,6"/>
+                                </StackPanel>
                             </DockPanel>
 
                             <DataGrid Grid.Row="1"
                                       ItemsSource="{Binding Init.ListFiles, UpdateSourceTrigger=PropertyChanged}"
                                       AutoGenerateColumns="False"
+                                      IsReadOnly="False"
+                                      FrozenColumnCount="1"
                                       Margin="18,0,18,18"
                                       MinHeight="460">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Sous-dossier" Binding="{Binding SubFolder}" Width="170"/>
-                                    <DataGridTextColumn Header="Fichier original" Binding="{Binding OriginFilename}" Width="*"/>
-                                    <DataGridTextColumn Header="Nouveau nom" Binding="{Binding NewFileName}" Width="*"/>
-                                    <DataGridCheckBoxColumn Header="Workshared" Binding="{Binding Workshared}" Width="95"/>
-                                    <DataGridCheckBoxColumn Header="Converti" Binding="{Binding Converted}" Width="90"/>
-                                    <DataGridTextColumn Header="Statut" Binding="{Binding Status}" Width="240"/>
+                                    <DataGridTemplateColumn Header="À upgrader" Width="105">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsChecked="{Binding Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"
+                                                          Margin="0"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="Sous-dossier" Binding="{Binding SubFolder}" Width="170" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Fichier original" Binding="{Binding OriginFilename}" Width="*" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Nouveau nom" Binding="{Binding NewFileName}" Width="*" IsReadOnly="True"/>
+                                    <DataGridCheckBoxColumn Header="Workshared" Binding="{Binding Workshared}" Width="95" IsReadOnly="True"/>
+                                    <DataGridCheckBoxColumn Header="Converti" Binding="{Binding Converted}" Width="90" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Statut" Binding="{Binding Status}" Width="240" IsReadOnly="True"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Grid>
